@@ -1,0 +1,38 @@
+{
+  "name": "@luishutterli/auth-kit-react",
+  "description": "React client library for the AuthKit authentication suite.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luishutterli/auth-kit-react.git"
+  },
+  "version": "0.0.1",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.mjs.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs.js",
+      "import": "./dist/index.mjs.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "author": {
+    "name": "Luis Hutterli",
+    "url": "https://luishutterli.ch/"
+  },
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "bun build src/index.tsx --outdir dist --target browser,node --splitting --minify && tsc --emitDeclarationOnly --outDir dist/types"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  }
+}
