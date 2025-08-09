@@ -1,5 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
-import type { LoginResponse, LogoutResponse, MeResponse, SignupResponse } from "./types";
+import type { LoginResponse, LogoutResponse, MeResponse, RefreshResponse, SignupResponse } from "./types";
 
 export class AuthKitAPI {
   private readonly api: AxiosInstance;
@@ -84,6 +84,21 @@ export class AuthKitAPI {
         }
       }
       throw new Error("Network error during user info fetch");
+    }
+  }
+
+  async refresh(): Promise<RefreshResponse> {
+    try {
+      const response = await this.api.post<RefreshResponse>("/refresh");
+      return response.data;
+    } catch (error: unknown) {
+      if (error && typeof error === "object" && "response" in error) {
+        const axiosError = error as { response?: { data?: RefreshResponse } };
+        if (axiosError.response?.data) {
+          return axiosError.response.data;
+        }
+      }
+      throw new Error("Network error during token refresh");
     }
   }
 }

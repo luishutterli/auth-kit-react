@@ -7,7 +7,7 @@ import type { AuthActions, AuthState } from "./types";
  * @returns Object containing authentication state and methods
  */
 export const useAuth = (): AuthState & AuthActions => {
-  const { user, isAuthenticated, isLoading, error, login, signup, logout, clearError } =
+  const { user, isAuthenticated, isLoading, error, login, signup, logout, refresh, clearError } =
     useAuthStore();
 
   return {
@@ -19,6 +19,7 @@ export const useAuth = (): AuthState & AuthActions => {
     login: useCallback(login, []),
     signup: useCallback(signup, []),
     logout: useCallback(logout, []),
+    refresh: useCallback(refresh, []),
     clearError: useCallback(clearError, []),
   };
 };
@@ -41,12 +42,13 @@ export const useAuthState = (): AuthState => {
  * Hook to access just the authentication actions (without state)
  */
 export const useAuthActions = (): AuthActions => {
-  const { login, signup, logout, clearError } = useAuthStore();
+  const { login, signup, logout, refresh, clearError } = useAuthStore();
 
   return {
     login: useCallback(login, []),
     signup: useCallback(signup, []),
     logout: useCallback(logout, []),
+    refresh: useCallback(refresh, []),
     clearError: useCallback(clearError, []),
   };
 };

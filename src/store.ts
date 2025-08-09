@@ -115,6 +115,43 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     }
   },
 
+  refresh: async () => {
+    const { _api } = get();
+    if (!_api) {
+      set({ error: "AuthKit API not initialized" });
+      return;
+    }
+
+    set({ isLoading: true, error: null });
+
+    try {
+      const result = await _api.refresh();
+
+      if (result.success && result.user) {
+        set({
+          user: result.user,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+      } else {
+        set({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          error: result.error || "Token refresh failed",
+        });
+      }
+    } catch (error) {
+      set({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: error instanceof Error ? error.message : "Token refresh failed",
+      });
+    }
+  },
+
   _checkAuthStatus: async () => {
     const { _api } = get();
     if (!_api) {

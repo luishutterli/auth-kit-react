@@ -23,6 +23,7 @@ export interface AuthActions {
     surname: string,
   ) => Promise<void>;
   logout: () => Promise<void>;
+  refresh: () => Promise<void>;
   clearError: () => void;
 }
 
@@ -46,4 +47,10 @@ export interface MeResponse {
 
 export interface LogoutResponse {
   success: boolean;
+}
+
+export interface RefreshResponse {
+  success: boolean;
+  user?: User;
+  error?: string;
 }

@@ -186,6 +186,16 @@ const handleLogout = async () => {
 };
 ```
 
+### Refresh Token
+
+```tsx
+const { refresh, isLoading, error } = useAuth();
+
+const handleRefresh = async () => {
+  await refresh();
+};
+```
+
 ### Check Authentication Status
 
 ```tsx
@@ -238,6 +248,48 @@ useEffect(() => {
     setTimeout(clearError, 5000);
   }
 }, [error, clearError]);
+```
+
+### Manual Token Refresh
+
+The refresh function is useful when you need to manually refresh the user's authentication token, for example, when handling expired tokens in API calls:
+
+```tsx
+import { useAuth } from '@luishutterli/auth-kit-react';
+
+function ApiService() {
+  const { refresh } = useAuth();
+
+  const makeApiCall = async (url: string) => {
+    try {
+      const response = await fetch(url, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // If we get a 401, try refreshing the token once
+      if (response.status === 401) {
+        await refresh();
+        // Retry the API call
+        return fetch(url, {
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+
+      return response;
+    } catch (error) {
+      console.error('API call failed:', error);
+      throw error;
+    }
+  };
+
+  return { makeApiCall };
+}
 ```
 
 ## Requirements

@@ -16,5 +16,6 @@ export type {
   LoginResponse,
   LogoutResponse,
   MeResponse,
+  RefreshResponse,
   SignupResponse,
 } from "./types";
